@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Row, Col, Card, Form } from "react-bootstrap";
+import { Draggable } from "react-beautiful-dnd";
+import {  Col, Card, Form } from "react-bootstrap";
 import { AiFillEdit, AiFillDelete, AiFillCheckCircle } from "react-icons/ai";
 interface Props {
   id: string;
@@ -7,6 +8,7 @@ interface Props {
   editTodos: (id: string, value: string) => void;
   deleteTodo: (id: string) => void;
   markTodo: (id: string) => void;
+  index : number;
 }
 
 const ToDo: React.FC<Props> = ({
@@ -15,6 +17,7 @@ const ToDo: React.FC<Props> = ({
   editTodos,
   markTodo,
   deleteTodo,
+  index
 }) => {
   const [isEdit, setIsEdit] = useState(false);
   const refContainer = useRef<HTMLInputElement>(null);
@@ -53,20 +56,27 @@ const ToDo: React.FC<Props> = ({
       refContainer.current.focus();
       refContainer.current.value = todo;
     }
-  }, [isEdit]);
+  }, [isEdit,todo]);
   return (
-    <Card className="gradient-text w-100 card-hover" border="light">
-      <Card.Body className="d-flex  align-items-center justify-content-evenly">
-        <Col xs="6" md="7">
-          {isEdit ? edit : todoItem}
-        </Col>
-        <div className="todo-buttons">
-          <AiFillEdit className="text-warning" onClick={handleEdit} />
-          <AiFillDelete className="text-danger" onClick={handleDelete} />
-          <AiFillCheckCircle className="text-success" onClick={handleMark} />
-        </div>
-      </Card.Body>
-    </Card>
+    <Draggable draggableId={id} index={index}>
+      {(provided) => (
+        <Card className="gradient-text card-hover" border="light" {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
+          <Card.Body className="d-flex  align-items-center justify-content-evenly">
+            <Col xs="6" md="7">
+              {isEdit ? edit : todoItem}
+            </Col>
+            <div className="todo-buttons">
+              <AiFillEdit className="text-warning" onClick={handleEdit} />
+              <AiFillDelete className="text-danger" onClick={handleDelete} />
+              <AiFillCheckCircle
+                className="text-success"
+                onClick={handleMark}
+              />
+            </div>
+          </Card.Body>
+        </Card>
+      )}
+    </Draggable>
   );
 };
 

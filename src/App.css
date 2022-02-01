@@ -6,6 +6,7 @@ body{
 }
 .gradient-text{
    background: -webkit-linear-gradient(rgb(255, 255, 255), rgb(241, 248, 198));
+   background-clip : text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-family: 'Spartan', sans-serif;

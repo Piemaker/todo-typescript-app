@@ -5,6 +5,7 @@ import "../src/App.css";
 import InputForm from "./components/InputForm";
 import ToDo from "./components/ToDo";
 import { ToDoType } from "./util";
+import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 
 const App: React.FC = () => {
   const [input, setInput] = useState<string>("");
@@ -36,7 +37,7 @@ const App: React.FC = () => {
   };
   let finishedTodos : (JSX.Element | undefined)[] = [];
   let unfinishedTodos: (JSX.Element | undefined)[] = [];
-  todos.map((todoItem) => {
+  todos.forEach((todoItem,index) => {
     const { id, todo, isDone } = todoItem;
     const todoComponent = (
       <ToDo
@@ -46,6 +47,7 @@ const App: React.FC = () => {
         editTodos={editTodos}
         deleteTodo={deleteTodo}
         markTodo={markTodo}
+        index = {index}
       ></ToDo>
     );
     if (isDone) {
@@ -54,37 +56,77 @@ const App: React.FC = () => {
       unfinishedTodos.push(todoComponent);
     }
   });
+  const onDragEnd = (result : DropResult)=>{
+    if(result.source && result.destination){
+      markTodo(result.draggableId);
+    }
+  }
   return (
-    <Container className="mt-5">
-      <Row className="justify-content-center">
-        <Col>
-          <h1 className="display-5 text-center color-white text-capitalize gradient-text font-weight-bold">
-            Todo App
-          </h1>
-        </Col>
-      </Row>
-      <Row>
-        <InputForm
-          input={input}
-          setInput={setInput}
-          setTodos={setTodos}
-          todos={todos}
-        ></InputForm>
-      </Row>
-      <Container>
-        <Row className="mt-3">
-          <Col md="6" className="mt-3">
-            <h2 className="display 5 gradient-text text-center">Unfinished</h2>
-            {unfinishedTodos}
-          </Col>
-
-          <Col md="6" className="mt-3">
-            <h2 className="display 5 gradient-text text-center">Finished</h2>
-            {finishedTodos}
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Container className="mt-5">
+        <Row className="justify-content-center">
+          <Col>
+            <h1 className="display-5 text-center color-white text-capitalize gradient-text font-weight-bold">
+              Todo App
+            </h1>
           </Col>
         </Row>
+        <Row>
+          <InputForm
+            input={input}
+            setInput={setInput}
+            setTodos={setTodos}
+            todos={todos}
+          ></InputForm>
+        </Row>
+        <Container>
+          <Row className="mt-3">
+            <Droppable droppableId="unfinished-todos">
+              {(provided, snapshot) => (
+                <Col
+                  md="6"
+                  className={`mt-3 ${
+                    snapshot.isDraggingOver && "border border-light"
+                  }`}
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
+                  <div className="py-5">
+                    <h2 className="display 5 gradient-text text-center">
+                      Unfinished
+                    </h2>
+                    {unfinishedTodos}
+                  </div>
+
+                  {provided.placeholder}
+                </Col>
+              )}
+            </Droppable>
+            <Droppable droppableId="finished-todos">
+              {(provided, snapshot) => (
+                <Col
+                  md="6"
+                  className={`mt-3 ${
+                    snapshot.isDraggingOver && "border border-light"
+                  }`}
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
+                  {" "}
+                  <div className="py-5">
+                    <h2 className="display 5 gradient-text text-center">
+                      Finished
+                    </h2>
+                    {finishedTodos}
+                  </div>
+                  {provided.placeholder}
+                </Col>
+              )}
+            </Droppable>
+          </Row>
+        </Container>
       </Container>
-    </Container>
+    </DragDropContext>
   );
 };
 
