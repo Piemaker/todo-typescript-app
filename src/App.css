@@ -1,5 +1,6 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Spartan:wght@800&display=swap');body{
+@import url('https://fonts.googleapis.com/css2?family=Spartan:wght@800&display=swap');
+body{
  background-image: url("../public/celebration.png");
   background-color: #ffffff;
 }
@@ -29,4 +30,7 @@ padding: 0.5rem;
   cursor: pointer;
   filter: saturate(4);
 }
+.card-hover:hover{
+  -webkit-text-fill-color: rgb(25,135,84);
 
+}

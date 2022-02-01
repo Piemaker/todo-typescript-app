@@ -54,19 +54,19 @@ const ToDo: React.FC<Props> = ({
       refContainer.current.value = todo;
     }
   }, [isEdit]);
-  return  (
-      <Card className="gradient-text w-100" border="light">
-        <Card.Body className="d-flex  align-items-center justify-content-evenly">
-          <Col xs="6" md="7">
-            {isEdit ? edit : todoItem}
-          </Col>
-          <div className="todo-buttons">
-            <AiFillEdit className="text-warning" onClick={handleEdit} />
-            <AiFillDelete className="text-danger" onClick={handleDelete} />
-            <AiFillCheckCircle className="text-success" onClick={handleMark} />
-          </div>
-        </Card.Body>
-      </Card> 
+  return (
+    <Card className="gradient-text w-100 card-hover" border="light">
+      <Card.Body className="d-flex  align-items-center justify-content-evenly">
+        <Col xs="6" md="7">
+          {isEdit ? edit : todoItem}
+        </Col>
+        <div className="todo-buttons">
+          <AiFillEdit className="text-warning" onClick={handleEdit} />
+          <AiFillDelete className="text-danger" onClick={handleDelete} />
+          <AiFillCheckCircle className="text-success" onClick={handleMark} />
+        </div>
+      </Card.Body>
+    </Card>
   );
 };
 
