@@ -57,7 +57,8 @@ const App: React.FC = () => {
     }
   });
   const onDragEnd = (result : DropResult)=>{
-    if(result.source && result.destination){
+    if(result.source && result.destination && result.source.droppableId !== result.destination.droppableId){
+      console.log(result)
       markTodo(result.draggableId);
     }
   }
