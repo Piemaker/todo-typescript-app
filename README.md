@@ -1,3 +1,4 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/43f6ce2b-738e-4766-ab3f-47a389deba6a/deploy-status)](https://app.netlify.com/sites/todo-react-ts/deploys)
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
